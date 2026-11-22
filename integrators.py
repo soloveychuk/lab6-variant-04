@@ -18,7 +18,7 @@ class BaseIntegrator:
     @classmethod
     def from_dict(cls, func, params):
         """Альтернативний конструктор для створення інтегратора зі словника."""
-        pass
+        return cls(func, params["a"], params["b"])
 
     @staticmethod
     def validate_bounds(a, b):
@@ -49,8 +49,7 @@ class BaseIntegrator:
 
     def __str__(self):
         """Повертає рядкове представлення об'єкта інтегратора."""
-        pass
-
+        return f"{self.method_name} на [{self.a}; {self.b}]"
 
 class RectangleIntegrator(BaseIntegrator):
     """Обчислення інтеграла складеною формулою середніх прямокутників."""
