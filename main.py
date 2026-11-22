@@ -32,7 +32,7 @@ def main():
 
         for method in methods:
             integrator = method(target_function, 0.0, 1.0)
-            result, n, error = integrator.adaptive_integrate(1e-4)
+            result, n, error = integrator.adaptive_integrate(eps)
 
             print(integrator)
             print(f"Уточнений інтеграл: {result:.7f}")
