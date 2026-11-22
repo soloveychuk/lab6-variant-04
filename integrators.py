@@ -7,9 +7,13 @@ class BaseIntegrator:
     order = 1
     method_name = "Базовий метод"
 
+
     def __init__(self, func, a, b):
         """Ініціалізує підінтегральну функцію та межі інтегрування."""
-        pass
+        self.validate_bounds(a, b)
+        self.func = func
+        self.a = a
+        self.b = b
 
     @classmethod
     def from_dict(cls, func, params):
@@ -19,7 +23,8 @@ class BaseIntegrator:
     @staticmethod
     def validate_bounds(a, b):
         """Перевіряє коректність меж інтегрування."""
-        pass
+        if a >= b:
+            raise ValueError("a має бути менше за b")
 
     def integrate(self, n):
         """Обчислює наближене значення інтеграла для n розбиттів."""
@@ -37,14 +42,21 @@ class BaseIntegrator:
 class RectangleIntegrator(BaseIntegrator):
     """Обчислення інтеграла складеною формулою середніх прямокутників."""
 
-    order = None
+    order = 2
     method_name = "Формула прямокутників"
 
     def __init__(self, func, a, b):
-        pass
+        super().__init__(func, a, b)        
 
     def integrate(self, n):
-        pass
+        h = (self.b - self.a) / n
+        result = 0
+        for i in range(n):
+            x = self.a + (i + 0.5) * h
+            result += self.func(x)
+
+        return result * h
+
 
 
 class TrapezoidIntegrator(BaseIntegrator):
