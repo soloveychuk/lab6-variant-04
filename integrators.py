@@ -32,15 +32,18 @@ class BaseIntegrator:
 
     def adaptive_integrate(self, eps=1e-4, initial_n=2):
         """Знаходить інтеграл із заданою точністю eps за правилом Рунге."""
+         # Початкова кількість розбиттів
         n = initial_n
         previous = self.integrate(n)
         while True:
             n *= 2
             current = self.integrate(n)
 
+            # Обчислення поправки Річардсона та оцінки похибки Рунге
             correction = (current - previous) /(2 ** self.order - 1)
             error = abs(correction)
 
+            # Перевірка досягнення заданої точності
             if error <= eps:
                 return current + correction, n, error
 
@@ -61,8 +64,12 @@ class RectangleIntegrator(BaseIntegrator):
         super().__init__(func, a, b)        
 
     def integrate(self, n):
+
+        # Визначення кроку інтегрування
         h = (self.b - self.a) / n
         result = 0
+
+        # Обчислення суми значень функції в серединах відрізків
         for i in range(n):
             x = self.a + (i + 0.5) * h
             result += self.func(x)
@@ -82,7 +89,7 @@ class TrapezoidIntegrator(BaseIntegrator):
 
     def integrate(self, n):
         h = (self.b - self.a) / n
-        result = (self.func(self.a) + self.func(self.b)) / 2
+        result = (self.func(self.a) + self.func(self.b)) / 2 # Врахування значень функції на кінцях відрізка
 
         for i in range(1, n):
             x = self.a + i * h
@@ -100,6 +107,8 @@ class SimpsonIntegrator(BaseIntegrator):
         super().__init__(func, a, b)
 
     def integrate(self, n):
+
+        # Перевірка коректності кількості розбиттів
         if n < 2 or n % 2 != 0:
             raise ValueError("n має бути парним і не меншим за 2")
         h = (self.b - self.a) / n

@@ -14,6 +14,7 @@ def target_function(x):
     return math.sin(x) * math.exp(-x**2)
 def control_function(x):
     """Функція контрольного прикладу."""
+    # Усунення невизначеності при x, близькому до нуля(дял тестової функції)
     if abs(x) <= 1e-8:
         return -0.5
     return (math.cos(x) - 1) / x**2
@@ -26,9 +27,9 @@ def main():
         TrapezoidIntegrator,
         SimpsonIntegrator,
     ]
-
+    # Дослідження методів для двох значень точності 
     for eps in (1e-5, 1e-6):
-        print(f"\nВаріант №4, точність: {eps}")
+        print(f"\nТочність: {eps}")
 
         for method in methods:
             integrator = method(target_function, 0.0, 1.0)
